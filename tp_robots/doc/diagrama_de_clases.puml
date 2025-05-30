@@ -1,0 +1,190 @@
+@startuml
+
+class Juego {
+    - jugador: Jugador
+    - tablero: Tablero
+    - nivelActual: Integer
+    - gestorDeNivel: GestorDeNivel
+    - gestorDeMovimiento: GestorDeMovimiento
+    - gestorDeColisiones: GestorDeColisiones
+
+    + reiniciar()
+    + teletransportarAzar(): Void
+    + teletransportarSeguro(): Void
+    + juegoSigue(): Boolean
+    + nivelFinalizado(): Boolean
+    + reiniciarEstadoNivel(): Void
+    + realizarMovimiento(): Void
+    + suscribirObservadorNivel(suscribirNivel: Suscriber)
+    + suscribirMuerteJugador(suscriptor: Subscriber)
+}
+
+class Jugador {
+    - celdaActual: Celda
+    - recolectablesObtenidos: Integer
+    - teletransportacionSegura: Integer
+    - CELDAS_POR_TURNO = 1
+
+    + agarrarRecolectable(recolectable: Recolectable): Void
+    + mover(celda: Celda, tablero: Tablero): Celda
+    + mover(horizontal: Integer, vertical: Integer, tablero: Tablero): Celda
+    + getCeldasPorTurno(): Integer
+    + puedeExplotar(): Boolean
+}
+
+
+class Tablero {
+    - random: Random
+    - filas: Integer
+    - columnas: Integer
+    - jugador: Jugador
+    - juegoFinalizado: Boolean
+
+    + reemplazarCelda(celda1: Celda, celda2: Celda): Void
+    + agregarCeldaOcupada(celda: Celda): Void
+    + agregarCeldaIncendiada(celda: Celda): Void
+    + agregarCeldaRecolectable(celda: Celda): Void
+    + eliminarRecolectable(celda: Celda): Void
+    + eliminarCeldaOcupada(celda: Celda): Void
+    + agregarRobot(robot: Robot): Void
+    + eliminarEntidad(entidad: Entidad): Void
+    + juegoEstaFinalizado(): Boolean
+    + nivelFinalizado(): Boolean
+    + finalizarJuego(): Void
+    + reiniciarEstadoNivel(): Void
+    + update(): Void
+    + addObserver(suscriptor: Subscriber): Void
+    + removeObserver(suscriptor: Subscriber): Void
+}
+
+class Celda {
+    # fila: Integer
+    # columna: Integer
+    # entidad: Entidad
+    # estaOcupada: Boolean
+    # esTransitableRobot: Boolean
+    # gestorDeColisiones: GestorDeColisiones
+
+    + reiniciarCelda(): Celda
+    + estaOcupada(): Boolean
+    + getEntidad(): Entidad
+    + ocupar(entidad: Entidad): Boolean
+    + desocuparCelda(): Void
+    + esTransitablePorRobot(): Boolean
+}
+
+class CeldaIncendiada {
+}
+
+class CeldaRecolectable {
+    - recolectable: Recolectable
+    + colocarRecolectable(recolectable: Recolectable): Void
+}
+
+class Robot1x {
+    - CELDAS_POR_TURNO: Integer = 1
+    + mover(celdaJugador: Celda, tablero: Tablero): Celda
+}
+
+class Robot2x {
+    - CELDAS_POR_TURNO: Integer = 2
+
+    + mover(celdaJugador: Celda, tablero: Tablero): Celda
+}
+
+class Diamante { }
+
+class GestorDeNivel {
+    + RECURSOS_POR_NIVEL = 4
+    - DISTANCIA_MINIMA_ENTRE_RECOLECTABLES = 3
+    - nivelActual: Integer
+    - tablero: Tablero
+    - gestorDeColisiones: GestorDeColisiones
+
+    + configurarNivel(nivel: Integer): Void
+    + pasarNivel(): Void
+    + update()
+    + addObserver(suscriptor: Subscriber)
+    + removeObserver(suscriptor: Subscriber)
+    + getNivelActual(): Integer
+}
+
+class GestorDeMovimiento {
+    - tablero: Tablero
+    - jugador: Jugador
+
+    + realizarMovimiento(horizontal: Integer, vertical: Integer, gestorDeNivel: GestorDeNivel): Void
+    + teletransportarJugador(gestorDeNivel: GestorDeNivel): Void
+    + teletransportarSeguroJugador(gestorDeNivel: GestorDeNivel)): Void
+}
+
+class GestorDeColisiones {
+    - tablero: Tablero
+
+    + resolverColision(entidad1: Entidad, entidad2: Entidad, celda: Celda): Void
+    + eliminarEntidad(entidad: Entidad): Void
+    + eliminarRecolectable(celda: Celda): Void
+}
+
+interface Entidad {
+    + mover(celda: Celda, tablero: Tablero): Celda
+    + getCelda(): Celda
+    + setCelda(): Void
+    + celdasPorTurno(): Integer
+}
+
+interface Observable {
+    + update()
+    + addObserver(suscriptor: Subscriber)
+    + removeObserver(suscriptor: Subscriber)
+}
+
+abstract class Recolectable {
+}
+
+abstract class Robot {
+    # celdaActual: Celda
+    + getCelda(): Celda
+    + setCelda(): Void
+    + abstract mover(celdaJugador: Celda, tablero: Tablero): Celda
+
+    # calcularMovimientoFila(celdaJugador: Celda): Integer
+    # calcularMovimientoColumna(celdaJugador: Celda): Integer
+    # buscarOtroCamino(movimientoFila: Integer, movimientoColumna: Integer, tablero: Tablero, celdaRecolectable: Celda): Celda
+    + puedeExplotar(): Boolean
+}
+
+interface Animable {
+    + getImagenesParaAnimacion(): ImageView[]
+}
+
+Juego "1" *--> "1" Jugador
+Juego "1" *--> "1" GestorDeNivel
+Juego "1" *--> "1" Tablero
+Juego "1" *--> "1" GestorDeMovimiento
+Juego "1" *--> "1" GestorDeColisiones
+
+Tablero ..|> Observable
+Tablero "1" o-> "1" Jugador
+Tablero "1" *--> "*" Entidad: enemigos
+Tablero "1" *--> "*" Recolectable: recolectables
+Tablero "1" *-> "*" Celda: celdasOcupadas
+Tablero "1" *--> "*" CeldaIncendiada: celdasIncendiadas
+
+Celda <|-- CeldaIncendiada
+Celda <|-- CeldaRecolectable
+
+Recolectable <|.. Diamante
+
+Robot <|.. Robot1x
+Robot <|.. Robot2x
+
+Entidad <|.. Jugador
+Entidad <|.. Robot
+
+Animable <|.. Jugador
+Animable <|.. Robot
+
+GestorDeNivel ..|> Observable
+
+@enduml

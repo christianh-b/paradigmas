@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tp.controlador.Controlador">
+
+    <top>
+        <VBox alignment="CENTER" prefHeight="21.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to bottom, #eeeeee 0%, #dddddd 100%);">
+            <children>
+            <HBox fx:id="menuBar" prefHeight="26.0" prefWidth="67.0">
+               <children>
+                  <MenuButton alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" style="-fx-background-color: linear-gradient(to bottom, #eeeeee 0%, #dddddd 100%);" text="Menu">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#volverInicio" text="Redimensionar tablero" />
+                    </items>
+                  </MenuButton>
+               </children>
+            </HBox>
+                  <HBox alignment="CENTER_LEFT" maxHeight="20.0" minHeight="20.0" prefHeight="20.0">
+                      <children>
+                  <HBox maxWidth="120.0" minWidth="120.0" prefWidth="120.0">
+                     <children>
+                        <Label fx:id="lblDiamanteRecolectado" />
+                     </children>
+                     <HBox.margin>
+                        <Insets right="190.0" />
+                     </HBox.margin>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="50.0">
+                     <children>
+                        <HBox>
+                           <children>
+                                      <Label fx:id="lblNivel" text="Nivel: ">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                        </HBox>
+                              <HBox spacing="5.0">
+                                  <children>
+                                      <Label fx:id="lblDiamantes" text="Diamantes: ">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Label>
+                                  </children>
+                              </HBox>
+                     </children>
+                  </HBox>
+                      </children>
+                  </HBox>
+            </children>
+        </VBox>
+    </top>
+    <bottom>
+        <HBox alignment="CENTER" prefHeight="70.0" prefWidth="800.0">
+            <children>
+                <VBox alignment="CENTER" prefHeight="50.0" prefWidth="260.0">
+                    <children>
+                        <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="67.0" maxWidth="267.0" minHeight="67.0" minWidth="267.0" mnemonicParsing="false" onAction="#teletransportarAlAzar" prefHeight="67.0" prefWidth="267.0" text="Teletransportarse al azar" />
+                    </children>
+                    <HBox.margin>
+                        <Insets />
+                    </HBox.margin>
+                </VBox>
+                <VBox alignment="CENTER" maxHeight="67.0" prefHeight="67.0" prefWidth="266.6">
+                    <children>
+                        <Button alignment="CENTER" contentDisplay="BOTTOM" maxHeight="67.0" maxWidth="267.0" minHeight="67.0" minWidth="267.0" onAction="#teletransportarSeguro" prefHeight="67.0" prefWidth="267.0" style="-fx-font-size: 14;" text="Teletransportarse con seguridad">
+                            <graphic>
+                                <Text fx:id="txtTeletransportacionSegura" strokeType="OUTSIDE" strokeWidth="0.0" text="(Quedan: )" textAlignment="CENTER" wrappingWidth="61.8447265625">
+                           <font>
+                              <Font size="12.0" />
+                           </font></Text>
+                            </graphic>
+                        </Button>
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" prefHeight="50.0" prefWidth="230.0">
+                    <children>
+                        <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="67.0" maxWidth="267.0" minHeight="67.0" minWidth="267.0" mnemonicParsing="false" onAction="#esperarRobots" prefHeight="67.0" prefWidth="267.0" text="Esperar robots" />
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </bottom>
+    <center>
+        <GridPane fx:id="tableroContainer" alignment="CENTER" BorderPane.alignment="CENTER">
+
+        </GridPane>
+    </center>
+</BorderPane>
